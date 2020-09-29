@@ -5,9 +5,11 @@ import java.util.concurrent.Semaphore;
 public class ImpressoraThread extends Thread{
 	
 	private Semaphore impressora;
+	private int count;
 	
-	public ImpressoraThread(Semaphore impressora) {
+	public ImpressoraThread(Semaphore impressora, int count) {
 		this.impressora = impressora;
+		this.count = count;
 	}
 	
 	@Override
@@ -17,8 +19,8 @@ public class ImpressoraThread extends Thread{
 		
 		try {
 			impressora.acquire();  //ADIQUIRIU A IMPRESSORA 
-			System.out.println("Imprimindo...");
 			Thread.sleep(3000);    //POR 3 SEGUNDOS
+			System.out.println("Imprimindo...");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -35,7 +37,7 @@ public class ImpressoraThread extends Thread{
 	}
 	
 	public void fimDeUso() {
-		System.out.println("A impressora foi usada!");
+		System.out.println("A impressora foi usada pela " + count +"º vez!");
 	}
 
 }

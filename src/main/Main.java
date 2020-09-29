@@ -10,8 +10,8 @@ public class Main {
 		
 		Semaphore impressora = new Semaphore(1);  // APENAS UMA PESSOA PODE USAR A IMPRESSORA POR VEZ
 		
-		for (int i = 0; i < 2; i++) {
-			Thread impressoraThread = new ImpressoraThread(impressora);
+		for (int i = 1; i <= 2; i++) {
+			Thread impressoraThread = new ImpressoraThread(impressora, i);
 			impressoraThread.start();
 		}
 		
