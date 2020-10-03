@@ -20,7 +20,7 @@ public class ViewImpressora extends ViewBase{
 	private JTextArea areaDeImpressao;
 	private JTextField campo;
 	private int ordem = 0;
-	private ArrayList<String> lista = new ArrayList<>();
+	private static ArrayList<String> lista = new ArrayList<>();
 	private Semaphore impressora = new Semaphore(1);
 	/**
 	 * O semaphore foi salvo para que acionar o botão ele nunca crie um semaphore novo
@@ -70,6 +70,7 @@ public class ViewImpressora extends ViewBase{
 		campo.setBounds(290, 100, 250, 30);
 		campo.setEditable(false);
 		add(campo);
+		
 	}
 	
 	public class OuvinteCriar implements ActionListener{
@@ -78,13 +79,26 @@ public class ViewImpressora extends ViewBase{
 		public void actionPerformed(ActionEvent e) {
 			ordem+=1;
 			lista.add("Impressão "+ordem);
-			campo.setText(Arrays.toString(lista.toArray()));
+			//campo.setText(Arrays.toString(lista.toArray()));
 			//Formata a lista para que seja exibita em sequencia
-			area.setText(area.getText()+"Impressão "+ordem+"\n");
-			Thread impressoraThread = new ImpressoraThread(impressora,areaDeImpressao,ordem);
+			area.setText(ordenarString(ViewImpressora.GetLista()));
+			Thread impressoraThread = new ImpressoraThread(impressora,areaDeImpressao,campo,ordem);
 			impressoraThread.start();
 		}
 		
+	}
+	
+	public static ArrayList<String> GetLista() {
+		
+		return lista;
+	}
+	
+	public String ordenarString(ArrayList<String> frase) {
+		String  n ="";
+		for(int i =0 ; i < frase.size();i++) {
+			n = n + frase.get(i) + "\n";
+		}
+		return n;
 	}
 
 }
