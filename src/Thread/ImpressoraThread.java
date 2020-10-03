@@ -2,42 +2,34 @@ package Thread;
 
 import java.util.concurrent.Semaphore;
 
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 public class ImpressoraThread extends Thread{
 	
 	private Semaphore impressora;
-	private int count;
-	
-	public ImpressoraThread(Semaphore impressora, int count) {
+	private JTextArea area;
+	private int ordem;
+	public ImpressoraThread(Semaphore impressora,JTextArea area,int ordem) {
 		this.impressora = impressora;
-		this.count = count;
+		this.area = area;
+		this.ordem = ordem;
 	}
-	
 	@Override
 	public void run() {
-		
-		pedirUsarImpressora();
-		
 		try {
-			impressora.acquire();  //ADIQUIRIU A IMPRESSORA 
-			Thread.sleep(3000);    //POR 3 SEGUNDOS
-			System.out.println("Imprimindo...");
-			
+			impressora.acquire();
+			area.setText(area.getText()+"Imprimindo...\n");
+			Thread.sleep(3000);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		impressora.release();  //LIBERA IMPRESSORA
 		fimDeUso();
-		
-		
-	}
-	
-	public void pedirUsarImpressora() {
-		System.out.println("Pediu para usar impressora!");
+		impressora.release();
 	}
 	
 	public void fimDeUso() {
-		System.out.println("A impressora foi usada pela " + count +"º vez!");
+		area.setText(area.getText()+"IMPRESSÃO "+ordem+": impresso com sucesso!\n");
 	}
 
 }
